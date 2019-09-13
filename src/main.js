@@ -12,15 +12,31 @@
     //document.write(`${poke.name}</br>`)
 
 
-const personagens = POKEMON.pokemon;
-const showPokemons = document.getElementById("main");
+//const personagens = POKEMON.pokemon;
+//const showPokemons = document.getElementById("main");
 
-for (pokemons of personagens) {
-showPokemons.innerHTML += `<img src ="${pokemons.img}"/>`
-};
+//for (pokemons of personagens) {
+//showPokemons.innerHTML += `<img src ="${pokemons.img}"/>`
+//};
 
 //let pokemon = POKEMON.pokemon;
 
 //pokemon.map (function (pokemons)  {
-//  showPokemons.innerHTML+= `<img src = " ${pokemons.pokemon.img}"/>`;
+//  showPokemons.innerHTML+= `<img src = " ${pokemons.img}"/>`;
 //})
+
+const personagens = POKEMON.pokemon;
+const showPokemons = document.getElementById("main");
+
+for (pokemons of personagens) {
+  showPokemons.innerHTML += `
+    <div id="pokemon" class="pokeCard">
+    
+    <div id="name">
+    ${pokemons.name}
+    </div>
+    
+    <img src ="${pokemons.img}"/>
+
+    </div>`;
+};

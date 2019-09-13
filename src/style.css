@@ -1,20 +1,43 @@
 body {
   background-image: url(https://st2.depositphotos.com/3213441/12022/v/950/depositphotos_120226446-stock-illustration-pokemon-go-pokeball-seamless-texture.jpg);
-
 }
-body:after{
-   opacity: 0.5;
-}
+/*body::after{
+    content: "";
+    background-image: url(https://st2.depositphotos.com/3213441/12022/v/950/depositphotos_120226446-stock-illustration-pokemon-go-pokeball-seamless-texture.jpg);
+    background-repeat: repeat;
+    opacity: 0.8;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1; 
+   
+}*/
 
-#header{
- display:inline-block;
- position: absolute;
- width: 10px;
- height: 50px;
+#logo{
+ display:block;
+ margin-left:auto;
+ margin-right:auto;
  }
 
 div#main {
   background-color: white;
   width: 60%;
   margin: 10% 20% 10% 20%;
+  padding: 1%;
+  justify-content: center;
+}
+
+.pokeCard {
+  background-color: aqua;
+  display: inline-block;
+  margin: 1%;
+  padding: 0.8%;
+
+}
+
+div#name {
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 120%;
 }
