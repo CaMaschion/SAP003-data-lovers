@@ -5,12 +5,21 @@
   //return "example";
 //};
 
-window.example = example;
+window.ordenPokemons = ordenPokemons;
 
-function OrderPokemon() {
- const personagens = POKEMON.pokemon;
- let orderPokemon = document.getElementById('').value;
-  for (pokemons of personagens){
+function ordenPokemons() {
+  const personagens = POKEMON.pokemon;
+  let orderPokemon = "";
 
-  }
-}
+  for(pokemons of personagens) {
+
+  switch (orderPokemon){
+  case "a-z":
+    personagens.name.sort();
+    break;
+  case "z-a":
+    personagens.name.sort();
+    personagens.name.reverse();
+    break;
+ }
+};
