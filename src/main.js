@@ -40,3 +40,9 @@ for (pokemons of personagens) {
 
     </div>`;
 };
+
+
+function selectOrderPokemon() {
+ let orderPokemon = document.getElementById('ordenarPokemons').value;
+   orderPokemon
+  }
