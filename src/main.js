@@ -2,9 +2,9 @@
 const personagens = POKEMON.pokemon;
 printPokemons(personagens);
 
-function printPokemons(pokemonList){
-const showPokemons = document.getElementById("main");
-showPokemons.innerHTML = "";
+function printPokemons(pokemonList) {
+  const showPokemons = document.getElementById("main");
+  showPokemons.innerHTML = "";
   for (pokemons of pokemonList) {
     showPokemons.innerHTML += `
     <div id="pokemon" class="pokeCard">
@@ -18,7 +18,6 @@ showPokemons.innerHTML = "";
     </div>`;
   }
 }
-
 
 function selectOrderPokemon() {
   let orderPokemon = document.getElementById("ordenarPokemons").value;
