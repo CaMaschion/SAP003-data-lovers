@@ -7,19 +7,27 @@
 
 window.ordenPokemons = ordenPokemons;
 
-function ordenPokemons() {
+function ordenPokemons(orderPokemon) {
   const personagens = POKEMON.pokemon;
-  let orderPokemon = "";
-
-  for(pokemons of personagens) {
+  let orderList = [];
 
   switch (orderPokemon){
   case "a-z":
-    personagens.name.sort();
+    orderList = personagens.sort((a, b) => {
+  if (a.name > b.name) {
+    return 1;
+  }
+  return -1;
+});
     break;
   case "z-a":
-    personagens.name.sort();
-    personagens.name.reverse();
+    personagens.sort((a, b) => {
+  if (a.name > b.name) {
+    return 1;
+  }
+  return -1;
+});
+    personagens.reverse();
     break;
  }
 };
