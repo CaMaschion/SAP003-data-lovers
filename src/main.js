@@ -3,44 +3,44 @@ const personagens = POKEMON.pokemon;
 
 const getPokemons = (order) => {
   fetch("https://pokeapi.co/api/v2/pokemon?limit=20")
-  .then(response => response.json())
-  .then(data =>{
-    const pokemonsApi = data.results;
-    const ordenated = orderPokemons(order, pokemonsApi);
-    ordenated.map(pokemon => {
-      fetch(pokemon.url)
-      .then(response => response.json())
-      .then(data => {
-        const img = data.sprites.front_default;
-        const types = data.types.map(type => type.type.name);
-        const typesPrint = types.join(", ");
-
-        // types.forEach(type =>{
-        //   document.getElementById("tipos" + type).textContent++;
-        // })
-
-        data.types.map(type => {
-          fetch(type.type.url)
+    .then(response => response.json())
+    .then(data => {
+      const pokemonsApi = data.results;
+     // const filterPokemon = filterPoke(filter)
+      const ordenated = orderPokemons(order, pokemonsApi);
+      ordenated.map(pokemon => {
+        fetch(pokemon.url)
           .then(response => response.json())
           .then(data => {
-            const teste = {
-              name: pokemon.name,
-              img: Image,
-              types: typesPrint,
-            }
-            console.log(teste)
-            const weaknessesArray = data.damage_relations.double_damage_from;
-            const weaknesses = weaknessesArray.map(weakness => weakness.name).join(", ");
-            principal.innerHTML += cardTemplate(img, pokemon.name, typesPrint, weaknesses);
+            const img = data.sprites.front_default;
+            const types = data.types.map(type => type.type.name);
+            const typesPrint = types.join(", ");
+
+            principal.innerHTML += cardTemplate(img, pokemon.name, typesPrint);
+
+            //  types.forEach(type =>{
+            //    document.getElementById("type" + type).textContent++;
+            //  })
+
+            // data.types.map(type => {
+            //   fetch(type.type.url)
+            //     .then(response => response.json())
+            //     .then(data => {
+            //       const infos = {
+            //         name: pokemon.name,
+            //         img: Image,
+            //         types: typesPrint,  
+            //       }
+                  
+            //     })
+            // })
           })
-        })
       })
     })
-  })
 }
 
 
-const cardTemplate = (image, name, types, weaknesses) => {
+const cardTemplate = (image, name, types) => {
   const layout = `
     <div id="pokemon" class="poke-card">
       <div class="infos">
@@ -49,9 +49,7 @@ const cardTemplate = (image, name, types, weaknesses) => {
           ${name}
         </div>
         <p class="subtitle">Tipo:</p>
-          ${types}
-        <p class="subtitle">Fraquezas:</p>
-          ${weaknesses}
+          ${types}        
        </div>
     </div>`;
   return layout;
@@ -90,18 +88,18 @@ document.getElementById("ordenarPokemons").addEventListener("change", (e) => {
 // }
 // carregarPokemon(personagens);
 
-document.getElementById("filter").addEventListener("click", function() {
-  const types = Array.from(document.querySelectorAll(".type:checked")).map(function (element) {    
+document.getElementById("filter").addEventListener("click", function () {
+  const types = Array.from(document.querySelectorAll(".type:checked")).map(function (element) {
     return element.value;
   });
   filtrarPorTipo(POKEMON.pokemon, types);
   const pokemonFiltrado = app.filtrarPorTipo(POKEMON.pokemon, types);
 
   cardTemplate(pokemonFiltrado);
-  
+
 });
 
-document.getElementById("ordenarPokemons").addEventListener("change", function() {
+document.getElementById("ordenarPokemons").addEventListener("change", function () {
   const ordem = Array.from(document.querySelectorAll("#ordenarPokemons")).map(function (element) {
     return element.value;
   });
@@ -111,14 +109,14 @@ document.getElementById("ordenarPokemons").addEventListener("change", function()
 
 function selectOrderPokemon() {
   let orderPokemon = document.getElementById("ordenarPokemons").value;
-  let orderList = window.ordenPokemons(orderPokemon, personagens);
+  let orderList = window.orderPokemons(orderPokemon, personagens);
   carregarPokemon(orderList);
 }
 
 function showTypes() {
   let qtTypes = app.pokeCalc(personagens);
   for (tipo in qtTypes) {
-    document.getElementById("type"+tipo).innerHTML = qtTypes[tipo];
+    document.getElementById("type" + tipo).innerHTML = qtTypes[tipo];
   }
 
 }

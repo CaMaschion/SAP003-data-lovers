@@ -1,13 +1,12 @@
 
 window.app = {
-  filtrarPorTipo,
- // ordenPokemons,
+ // filtrarPorTipo,
   pokeCalc
 };
 
 //filtrar pokemon
 
-function filtrarPorTipo(pokemon, types) {
+function filterPoke(pokemon, types) {
   let pokeTipos = []; 
   for (let i = 0; i < types.length; i++) { 
     const type = types[i];
