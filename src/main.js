@@ -1,44 +1,11 @@
 const principal = document.getElementById("principal")
+const menu = document.getElementById("poke-types")
+
+
+getPokemons("https://pokeapi.co/api/v2/pokemon?limit=20", "");
+getPokemonsTypes();
+
 const personagens = POKEMON.pokemon;
-
-const getPokemons = (order) => {
-  fetch("https://pokeapi.co/api/v2/pokemon?limit=20")
-    .then(response => response.json())
-    .then(data => {
-      const pokemonsApi = data.results;
-     // const filterPokemon = filterPoke(filter)
-      const ordenated = orderPokemons(order, pokemonsApi);
-      ordenated.map(pokemon => {
-        fetch(pokemon.url)
-          .then(response => response.json())
-          .then(data => {
-            const img = data.sprites.front_default;
-            const types = data.types.map(type => type.type.name);
-            const typesPrint = types.join(", ");
-
-            principal.innerHTML += cardTemplate(img, pokemon.name, typesPrint);
-
-            //  types.forEach(type =>{
-            //    document.getElementById("type" + type).textContent++;
-            //  })
-
-            // data.types.map(type => {
-            //   fetch(type.type.url)
-            //     .then(response => response.json())
-            //     .then(data => {
-            //       const infos = {
-            //         name: pokemon.name,
-            //         img: Image,
-            //         types: typesPrint,  
-            //       }
-                  
-            //     })
-            // })
-          })
-      })
-    })
-}
-
 
 const cardTemplate = (image, name, types) => {
   const layout = `
@@ -55,7 +22,8 @@ const cardTemplate = (image, name, types) => {
   return layout;
 };
 
-getPokemons("");
+
+
 
 document.getElementById("ordenarPokemons").addEventListener("change", (e) => {
   const orderPokemon = e.target.value;
@@ -63,40 +31,20 @@ document.getElementById("ordenarPokemons").addEventListener("change", (e) => {
   getPokemons(orderPokemon);
 });
 
-// function carregarPokemon(pokemons) {
-//   personagens = pokemons;
-
-//   const showPokemons = document.getElementById("principal");
-//   let layout = "";
-//   showPokemons.innerHTML = "";
-//   for (pokemon of pokemons) {
-//     layout += `
-//           <div id="pokemon" class="poke-card">
-//             <div class="infos">
-//               <img src ="${pokemon.img}"/>
-//               <div id = "name">
-//                 ${pokemon.name}
-//               </div>
-//               <p class="subtitle">Tipo:</p>
-//               ${pokemon.type}
-//               <p class="subtitle">Fraquezas:</p>
-//               ${pokemon.weaknesses}
-//             </div>
-//           </div>`;
-//   };
-//   showPokemons.innerHTML = layout;
-// }
-// carregarPokemon(personagens);
-
-document.getElementById("filter").addEventListener("click", function () {
+document.getElementById("filter").addEventListener("click", function() {
   const types = Array.from(document.querySelectorAll(".type:checked")).map(function (element) {
+    
     return element.value;
   });
-  filtrarPorTipo(POKEMON.pokemon, types);
-  const pokemonFiltrado = app.filtrarPorTipo(POKEMON.pokemon, types);
+ 
+  principal.innerHTML += "";
 
-  cardTemplate(pokemonFiltrado);
+  types.map((url, index)=>{
 
+    console.log("filtrando:", index)
+    getPokemons(url, "a-z");
+  })
+  
 });
 
 document.getElementById("ordenarPokemons").addEventListener("change", function () {
@@ -113,12 +61,14 @@ function selectOrderPokemon() {
   carregarPokemon(orderList);
 }
 
-function showTypes() {
-  let qtTypes = app.pokeCalc(personagens);
-  for (tipo in qtTypes) {
-    document.getElementById("type" + tipo).innerHTML = qtTypes[tipo];
-  }
-
+function menuTemplate(name, url) { 
+  
+  countPokemonsByType(url)
+  
+  const layout = `
+  <input type="checkbox" 
+  class="type" value="${url}">${name}(<span id="typeWater"></span>)<br>`;
+  return layout;
 }
 
 showTypes();

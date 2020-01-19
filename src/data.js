@@ -1,24 +1,33 @@
 
 window.app = {
- // filtrarPorTipo,
+  // filtrarPorTipo,
   pokeCalc
 };
 
 //filtrar pokemon
 
-function filterPoke(pokemon, types) {
-  let pokeTipos = []; 
-  for (let i = 0; i < types.length; i++) { 
-    const type = types[i];
-    pokemon.map(function (personagem) { 
-      if (personagem.type.includes(type)) { 
-        pokeTipos.push(personagem); 
-      }
-    });
-  }
-  return pokeTipos;
-
+const getPokemonsTypes = () => {
+  fetch("https://pokeapi.co/api/v2/type/")
+    .then(response => response.json())
+    .then(data => {
+      const typesApi = data.results;
+      typesApi.map(type => {
+        menu.innerHTML += menuTemplate(type.name, type.url);
+      })
+    })
 }
+
+const countPokemonsByType = (url) => {
+  
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      counter = data.pokemon.length;  
+          
+    })
+    
+}
+
 
 //ordenarpokemon
 
@@ -43,31 +52,6 @@ function orderPokemons(orderPokemon, pokemons) {
   return pokemons;
 };
 
-// function ordenPokemons(orderPokemon, pokemons) {
-//   let orderList = [];
-
-//   switch (orderPokemon) {
-//   case "a-z":
-//     pokemons.sort((a, b) => {
-//       if (a.name > b.name) {
-//         return 1;
-//       }
-//       return -1;
-//     });
-//     break;
-//   case "z-a":
-//     pokemons.sort((a, b) => {
-//       if (a.name > b.name) {
-//         return 1;
-//       }
-//       return -1;
-//     });
-//     pokemons.reverse();
-//     break;
-//   }
-//   return pokemons;
-// };
-
 //Calcula quantos pokemons tem de cada tipo
 
 function pokeCalc(pokeData) {
@@ -76,11 +60,34 @@ function pokeCalc(pokeData) {
       if (tipoPokemon in acumulador) {
         acumulador[tipoPokemon]++;
       } else {
-        acumulador[tipoPokemon]=1;
+        acumulador[tipoPokemon] = 1;
       }
     }
 
     return acumulador;
   }, {});
+
   return countTypes;
 };
+
+const getPokemons = (url,order) => {
+  
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      let pokemons = data.results;
+      console.log(data.results)
+      //const ordenated = orderPokemons(order, pokemonsApi);
+      pokemons.map(pokemon => {
+        fetch(pokemon.url)
+          .then(response => response.json())
+          .then(data => {
+            const img = data.sprites.front_default;
+            const types = data.types.map(type => type.type.name);
+
+            principal.innerHTML += cardTemplate(img, pokemon.name, types);
+
+          })
+      })
+    })
+}
