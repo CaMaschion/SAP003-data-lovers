@@ -1,54 +1,58 @@
 
 window.app = {
-  filtrarPorTipo,
-  ordenPokemons,
+  // filtrarPorTipo,
   pokeCalc
 };
 
 //filtrar pokemon
 
-function filtrarPorTipo(pokemon, types) {
-  let pokeTipos = []; // recebe/adiciona o pokemon filtrado
-  for (let i = 0; i < types.length; i++) { //entra no array que guarda os tipos de pokemon
-    const type = types[i];
-    pokemon.map(function (personagem) { //procura dentro do "for" o tipo de pokemon selecionado no checkbox
-      if (personagem.type.includes(type)) { // determinamos se realmente o array contem o tipo de pokemon selecionado
-        pokeTipos.push(personagem); //retorna então adicionando o pokemon selecionado ao array
-      }
-    });
-  }
-  return pokeTipos;
-
+const getPokemonsTypes = () => {
+  fetch("https://pokeapi.co/api/v2/type/")
+    .then(response => response.json())
+    .then(data => {
+      const typesApi = data.results;
+      typesApi.map(type => {
+        menu.innerHTML += menuTemplate(type.name, type.url);
+      })
+    })
 }
+
+const countPokemonsByType = (url) => {
+  
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      counter = data.pokemon.length;  
+          
+    })
+    
+}
+
 
 //ordenarpokemon
 
-function ordenPokemons(orderPokemon, pokemons) {
-  let orderList = [];
-
-  switch (orderPokemon) {
-  case "a-z":
+function orderPokemons(orderPokemon, pokemons) {
+  if (orderPokemon === "a-z") {
     pokemons.sort((a, b) => {
       if (a.name > b.name) {
         return 1;
       }
       return -1;
     });
-    break;
-  case "z-a":
+  } else if (orderPokemon === "z-a") {
     pokemons.sort((a, b) => {
       if (a.name > b.name) {
-        return 1;
+        return -1;
       }
-      return -1;
+      return 1;
     });
-    pokemons.reverse();
-    break;
+  } else {
+    return pokemons;
   }
   return pokemons;
 };
 
-//Calcula quantos pokemons tem em cada tipo
+//Calcula quantos pokemons tem de cada tipo
 
 function pokeCalc(pokeData) {
   let countTypes = pokeData.reduce(function (acumulador, pokemon) {
@@ -56,11 +60,34 @@ function pokeCalc(pokeData) {
       if (tipoPokemon in acumulador) {
         acumulador[tipoPokemon]++;
       } else {
-        acumulador[tipoPokemon]=1;
+        acumulador[tipoPokemon] = 1;
       }
     }
 
     return acumulador;
   }, {});
+
   return countTypes;
 };
+
+const getPokemons = (url,order) => {
+  
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      let pokemons = data.results;
+      console.log(data.results)
+      //const ordenated = orderPokemons(order, pokemonsApi);
+      pokemons.map(pokemon => {
+        fetch(pokemon.url)
+          .then(response => response.json())
+          .then(data => {
+            const img = data.sprites.front_default;
+            const types = data.types.map(type => type.type.name);
+
+            principal.innerHTML += cardTemplate(img, pokemon.name, types);
+
+          })
+      })
+    })
+}
