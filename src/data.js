@@ -1,93 +1,62 @@
-
-window.app = {
-  // filtrarPorTipo,
-  pokeCalc
-};
-
 //filtrar pokemon
 
-const getPokemonsTypes = () => {
-  fetch("https://pokeapi.co/api/v2/type/")
-    .then(response => response.json())
-    .then(data => {
-      const typesApi = data.results;
-      typesApi.map(type => {
-        menu.innerHTML += menuTemplate(type.name, type.url);
-      })
-    })
-}
+const getPokemonsTypes = async () => {
+  let response = await fetch("https://pokeapi.co/api/v2/type/");
+  let data = await response.json();
+  let types = await data.results;
 
-const countPokemonsByType = (url) => {
-  
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      counter = data.pokemon.length;  
-          
-    })
-    
-}
-
-
-//ordenarpokemon
-
-function orderPokemons(orderPokemon, pokemons) {
-  if (orderPokemon === "a-z") {
-    pokemons.sort((a, b) => {
-      if (a.name > b.name) {
-        return 1;
-      }
-      return -1;
-    });
-  } else if (orderPokemon === "z-a") {
-    pokemons.sort((a, b) => {
-      if (a.name > b.name) {
-        return -1;
-      }
-      return 1;
-    });
-  } else {
-    return pokemons;
-  }
-  return pokemons;
+  types.map((type, index) => {
+    menu.innerHTML += menuTemplate(type.name, type.url);
+  });
 };
 
-//Calcula quantos pokemons tem de cada tipo
+const countPokemonsByType = async url => {
+  let response = await fetch(url);
+  let data = await response.json();
+  let number = await data.pokemon.length;
 
-function pokeCalc(pokeData) {
-  let countTypes = pokeData.reduce(function (acumulador, pokemon) {
-    for (tipoPokemon of pokemon.type) {
-      if (tipoPokemon in acumulador) {
-        acumulador[tipoPokemon]++;
-      } else {
-        acumulador[tipoPokemon] = 1;
-      }
-    }
-
-    return acumulador;
-  }, {});
-
-  return countTypes;
+  addNumberOfPokemonInMenuTemplate(url, number);
 };
 
-const getPokemons = (url,order) => {
-  
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      let pokemons = data.results;
-      console.log(data.results)
-      //const ordenated = orderPokemons(order, pokemonsApi);
-      pokemons.map(pokemon => {
-        fetch(pokemon.url)
-          .then(response => response.json())
-          .then(data => {
-            const img = data.sprites.front_default;
-            const types = data.types.map(type => type.type.name);
+const getPokemons = async url => {
+  let response = await fetch(url);
+  let data = await response.json();
+  let pokemons = await data.results;
 
-            principal.innerHTML += cardTemplate(img, pokemon.name, types);
+  setCurrentPokemon(pokemons);
 
-          })
-      })
-    })
-}
+  pokemons.map(async pokemon => {
+    principal.innerHTML += cardTemplate(pokemon.name, pokemon.url);
+  });
+};
+
+const getPokemonBasicInformation = async (url, name) => {
+  let response = await fetch(url);
+  let data = await response.json();
+  let imageUrl = await data.sprites.front_default;
+  let types = data.types.map(slot => slot.type.name).toString();
+
+  addImageToCardTemplate(url, imageUrl);
+  addPokemonTypeToCardTemplate(name, types);
+};
+
+const getPokemonsByType = async url => {
+  let response = await fetch(url);
+  let data = await response.json();
+  let filtredPokemons = await data.pokemon;
+
+  setCurrentPokemon(filtredPokemons, false);
+
+  filtredPokemons.map(async filter => {
+    principal.innerHTML += cardTemplate(
+      filter.pokemon.name,
+      filter.pokemon.url
+    );
+  });
+};
+
+const setCurrentPokemon = async (pokemon) => {
+
+  pokemon.map(pokemon => currentPokemon.push(pokemon));
+  console.log(currentPokemon);
+};
