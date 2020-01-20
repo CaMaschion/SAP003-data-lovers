@@ -5,8 +5,6 @@ let currentPokemon = [];
 getPokemons("https://pokeapi.co/api/v2/pokemon?limit=151");
 getPokemonsTypes();
 
-const personagens = POKEMON.pokemon;
-
 const cardTemplate = (name, url) => {
   getPokemonBasicInformation(url, name);
 
