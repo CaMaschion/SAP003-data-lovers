@@ -5,9 +5,9 @@ const getPokemonsTypes = async () => {
   let data = await response.json();
   let types = await data.results;
 
-  types.map((type, index) => {
-    menu.innerHTML += menuTemplate(type.name, type.url);
-  });
+  const template = types.map((type, index) => menuTemplate(type.name, type.url));
+  menu.innerHTML += template;
+  
 };
 
 const countPokemonsByType = async url => {
